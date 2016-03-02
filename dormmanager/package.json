@@ -1,0 +1,23 @@
+{
+  "name": "dormmanager",
+  "version": "1.0.0",
+  "description": "A dorm manager that allows students an adminstators sign up and manage rooming situations in a college dorm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WitDBMS/DormManager-V2.git"
+  },
+  "keywords": [
+    "Dorm",
+    "SQLite"
+  ],
+  "author": "Jake Mathews and James LaVinge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WitDBMS/DormManager-V2/issues"
+  },
+  "homepage": "https://github.com/WitDBMS/DormManager-V2#readme"
+}
