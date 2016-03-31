@@ -2,57 +2,75 @@
 <html>
 
 <head>
-    <title>Login</title>
-    <style type="text/css">
-    .container {
-		margin-top: 5em;
-        width: 17em;
-        clear: both;
-    }
-    .container input {
-        width: 100%;
-        clear: both;
-    }
-	#submit {
-		width: 8em;
-		height: 2em;
-		margin-bottom: 1em;
-		margin-top: 0em;
-	}
-	#margin {
-		height: 2em;
-		margin-bottom: 1em;
-		margin-top: 1em;
-	}
-	.error {
-		color: red;
-	}
-	</style>
+  <title>Login</title>
+  <style type="text/css">
+  .container {
+    margin-top: 5em;
+    width: 17em;
+    clear: both;
+  }
+  .container input {
+    width: 100%;
+    clear: both;
+  }
+  #submit {
+    width: 8em;
+    height: 2em;
+    margin-bottom: 1em;
+    margin-top: 0em;
+  }
+  #margin {
+    height: 2em;
+    margin-bottom: 1em;
+    margin-top: 1em;
+  }
+  .error {
+    color: red;
+  }
+  </style>
   <script src="javascripts/jquery-2.2.1.min.js"></script>
-	<script> // Validate the form in js here
-	function validateForm() {
-		var form = document.querySelector("form");
-		console.log("testing");
-		console.log(form.elements.id.value);
-		console.log(form.elements.password.value);
-    $.ajax({url: "login", success: function(result){
-    }, type: "POST", data: {id: form.elements.id.value, password: form.elements.password.value}});
-	}
-	</script>
+  <script>
+  function supports_html5_storage() {
+    try {
+      return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+      return false;
+    }
+  }
+  </script>
+  <script> // Validate the form in js here
+  function validateForm() {
+    var form = document.querySelector("form");
+    if(supports_html5_storage()) { // Make sure they have HTML5 storage
+      $.ajax({url: "login", success: function(result){
+        console.log(result);
+        if(result.type === "fail") { // Login failed
+          console.log(result.data);
+          document.getElementById("status").innerHTML = result.data;
+        } else if (result.type === "success") { // Login passed
+          window.location = result.data;
+          localStorage.setItem("ID", JSON.stringify(form.elements.id.value));
+        }
+      }, type: "POST", data: {id: form.elements.id.value, password: form.elements.password.value}});
+    } else { // No local storage
+      document.getElementById("status").innerHTML = "Browser does not support HTML5 Storage";
+    }
+  }
+  </script>
 </head>
 
 <body>
 
-<div align="center">
-	<form>
-	<div class="container">
-    <h1 style="font-size:3em">Dorm Maker</h1>
-    <p class="status" style="font-size:1.5em"></p>
-		<p style="font-size:1.5em">Student ID <input id="margin" type="text" name="id"></p>
-		<p style="font-size:1.5em">Password <input id="margin" type="password" name = "password"></p>
-		<input style="font-size:1.5em" id="submit" type="button" value="Login" onclick="validateForm()">
-	</div>
-	</form>
-</div>
+  <div align="center">
+    <form>
+      <div class="container">
+        <h1 style="font-size:3em">Dorm Maker</h1>
+        <p style="font-size:1em" id="status" class="error"></p>
+        <p style="font-size:1.5em">Student ID <input id="margin" type="text" name="id"></p>
+        <p style="font-size:1.5em">Password <input id="margin" type="password" name = "password"></p>
+        <input style="font-size:1.5em" id="submit" type="button" value="Login" onclick="validateForm()">
+      </div>
+    </form>
+  </div>
 
 </body>

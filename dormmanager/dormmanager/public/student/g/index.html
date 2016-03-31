@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+background-color: #cccccc;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+div.sideBar {
+  position: absolute;
+	top: 8em;
+	right: 3%;
+  box-sizing: padding-box;
+
+  border: solid 5px;
+  border-radius: 40px 10px;
+  border-color: white;
+  border-spacing: 5px;
+
+  padding: 1em;
+
+  font-size: 1.1em;
+}
+
+t {
+  font-weight: bold;
+}
+
+h2{
+font-size: 40px;
+text-align: center;
+}
+
+p {
+font-size: 25px;
+text-align: center;
+}
+
+#button {
+  width: 11em;
+  height: 2em;
+  margin-bottom: 1em;
+  margin-top: 0em;
+  font-size: 1.75em;
+}
+
+</style>
+</head>
+<body>
+
+
+
+<h2>Dorm Room Selection</h2>
+
+<p>You are in a group</p>
+<div style = "text-align: center;">
+	<button id="button" type = "viewRooms" onclick="alert('Get available rooms.')">View available rooms</button>
+	<br>
+	<button id="button" type = "leaveGroup" onclick="alert('You have left your current group.')">Leave Group</button>
+  <br>
+  <button id="button" type = "logoff" onclick="alert('logging off')">Log Off</button>
+  <!--<script> document.getElementById('button').innerHTML = JSON.parse(localStorage.getItem("ID")); </script> -->
+</div>
+
+<div class="sideBar"><t>Group #:</t> <br>
+						<t>Group Memebers:</t> <br>
+						1 <br>
+						2 <br>
+						3 <br>
+            <br>
+					<t>Bulding:<t> <br>
+					<t>Room #:<t> <br>
+</div>
+
+</body>
+</html>
