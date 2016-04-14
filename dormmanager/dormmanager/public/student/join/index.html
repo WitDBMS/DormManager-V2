@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Join Group</title>
+  <style>
+    body {
+      background-color: #cccccc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .container {
+      margin-top: 5em;
+      width: 17em;
+      clear: both;
+    }
+    
+    .container input {
+      width: 100%;
+      clear: both;
+    }
+    
+    #submit {
+      width: 8em;
+      height: 2em;
+      margin-bottom: 1em;
+      margin-top: 0em;
+    }
+    
+    #margin {
+      height: 2em;
+      margin-bottom: 1em;
+      margin-top: 1em;
+    }
+    
+    .error {
+      color: red;
+    }
+  </style>
+  <script src="/javascripts/jquery-2.2.1.min.js"></script>
+  <script>
+    function supports_html5_storage() {
+      try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+        return false;
+      }
+    }
+  </script>
+  <script>
+    function joinGroup() {
+      var form = document.querySelector("form");
+      $.ajax({
+        type: "POST",
+        data: {
+          id: localStorage.getItem("ID"),
+          gid: form.elements.id.value,
+          request: "join_group"
+        },
+        url: "/student/ng/",
+        success: function(result) {
+          if (result.type === "success") { // Login passed
+            console.log(result);
+            window.location = result.data.location;
+          } else {
+            document.getElementById("status").innerHTML = "Invalid Group ID";
+          }
+        }
+      });
+    }
+  </script>
+</head>
+
+<body>
+
+  <div align="center">
+    <form>
+      <div class="container">
+        <h1 style="font-size:3em">Join Group</h1>
+        <p style="font-size:1em" id="status" class="error"></p>
+        <p style="font-size:1.5em">Enter Group ID
+          <input id="margin" type="text" name="id">
+        </p>
+        <input style="font-size:1.5em" id="submit" type="button" value="Join" onclick="joinGroup()">
+      </div>
+    </form>
+  </div>
+
+</body>

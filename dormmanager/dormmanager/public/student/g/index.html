@@ -88,6 +88,11 @@
         }
       });
     }
+
+    function logOff() {
+      window.location = "/";
+      localStorage.setItem("ID", null);
+    }
   </script>
 </head>
 
@@ -103,7 +108,7 @@
     <br>
     <button id="button" type="leaveGroup" onclick="leaveGroup()">Leave Group</button>
     <br>
-    <button id="button" type="logoff" onclick="alert('logging off')">Log Off</button>
+    <button id="button" type="logoff" onclick="logOff()">Log Off</button>
     <!--<script> document.getElementById('button').innerHTML = JSON.parse(localStorage.getItem("ID")); </script> -->
   </div>
 

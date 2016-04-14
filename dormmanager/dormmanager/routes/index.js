@@ -32,14 +32,26 @@ router.post("/login", function(req, res, next) {
 			success = false;
 		} else {
 			if (!isNaN(id) && rows.length > 0) {
-				var query = "SELECT * FROM students WHERE ID='" + id + "' AND Password='" + password + "'";
-				connection.query(query, function(err, rows, fields) {
+				var query2 = "SELECT * FROM groupmembers WHERE Student_ID='" + id + "'";
+				connection.query(query2, function(err2, rows2, fields2) {
+					console.log(query2);
+					if (err2) {
+						Console.log("Group check query failed");
+					} else {
+						var location;
+						if (rows2.length > 0) {
+							location = "student/g/";
+						} else {
+							location = "student/ng/";
+						}
+						console.log("Sending to " + location);
+						res.send({
+							type: "success",
+							data: location
+						});
+					}
+				});
 
-				});
-				res.send({
-					type: "success",
-					data: "student/g/"
-				});
 			} else {
 				res.send({
 					type: "fail",
@@ -116,6 +128,32 @@ router.post("/student/g/", function(req, res, next) {
 	}
 });
 
+router.post("/student/ng/", function(req, res, next) {
+
+	if (req.body.request === "join_group") {
+		// A login was attepted
+		console.log("\nJoin group requested");
+		console.log(req.body);
+
+		// Generate login QUERY
+		var id = req.body.id;
+		var gid = req.body.gid;
+
+		// Get group number
+		var p1 = join_group(id, gid);
+		p1.then(function(newLocation) {
+			res.send({
+				type: "success",
+				data: {
+					location: newLocation
+				}
+			});
+		}).catch(function(reason) {
+			fail("Could not get group number: " + reason);
+		});
+	}
+});
+
 function fail(reason) {
 	res.send({
 		type: "fail",
@@ -177,6 +215,20 @@ function leave_group(Student_ID) {
 				reject("Error in query: " + err);
 			} else {
 				resolve("/student/ng/");
+			}
+		});
+	});
+}
+
+function join_group(Student_ID, Group_ID) {
+	var query = "INSERT INTO groupmembers (Student_ID, Group_ID) VALUES ('" + Student_ID + "','" + Group_ID + "')";
+	return new Promise(function(resolve, reject) {
+		connection.query(query, function(err, rows, fields) {
+			console.log(query);
+			if (err) {
+				reject("Error in query: " + err);
+			} else {
+				resolve("/student/g/");
 			}
 		});
 	});

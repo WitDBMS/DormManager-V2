@@ -60,6 +60,7 @@
               console.log(result.data);
               document.getElementById("status").innerHTML = result.data;
             } else if (result.type === "success") { // Login passed
+              console.log("Going to " + result.data);
               window.location = result.data;
               localStorage.setItem("ID", form.elements.id.value);
             }

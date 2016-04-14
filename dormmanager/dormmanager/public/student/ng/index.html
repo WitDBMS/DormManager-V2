@@ -1,31 +1,103 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-body{
-background-color: #cccccc;
-}
+  <style>
+    body {
+      background-color: #cccccc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    div.sideBar {
+      position: absolute;
+      top: 8em;
+      right: 3%;
+      box-sizing: padding-box;
+      border: solid 5px;
+      border-radius: 40px 10px;
+      border-color: white;
+      border-spacing: 5px;
+      padding: 1em;
+      font-size: 1.1em;
+    }
+    
+    t {
+      font-weight: bold;
+    }
+    
+    h2 {
+      font-size: 40px;
+      text-align: center;
+    }
+    
+    p {
+      font-size: 25px;
+      text-align: center;
+    }
+    
+    #button {
+      width: 11em;
+      height: 2em;
+      margin-bottom: 1em;
+      margin-top: 0em;
+      font-size: 1.75em;
+    }
+  </style>
+  <script src="/javascripts/jquery-2.2.1.min.js"></script>
+  <script>
+    window.onload = function loadData() {
+      var sid = localStorage.getItem("ID");
+      $.ajax({
+        type: "POST",
+        data: {
+          request: "details",
+          id: sid
+        },
+        url: "/student/g",
+        success: function(result) {
+          if (result.type === "success") { // Login passed
+            console.log(result);
+            var groupNum = result.data.groupNum;
+            var members = result.data.members;
+            var buildingName = result.data.buildingName;
+            var roomNum = result.data.roomNum;
+            document.getElementById("groupNum").innerHTML = groupNum;
+            for (i = 0; i < members.length; i++) {
+              document.getElementById("members").innerHTML += (members[i].Name + "<br>");
+            }
+            document.getElementById("buildingName").innerHTML = buildingName;
+            document.getElementById("roomNum").innerHTML = roomNum;
+          }
+        }
+      });
+    }
 
-h2{
-font-size: 40px;
-text-align: center;
-}
+    function joinGroup() {
+      window.location = "/student/join";
+    }
 
-p {
-font-size: 25px;
-text-align: center;
-}
-</style>
+    function logOff() {
+      window.location = "/";
+      localStorage.setItem("ID", null);
+    }
+  </script>
 </head>
+
 <body>
 
-<h2>Dorm Room Selection</h2>
 
-<p>You are not in a group yet.</p>
-<div style = "text-align: center;">
-	<button type = "makeGroup" onclick="alert('You are now the leader of a new group.')">Make new group</button>
-</div>
-<button type = "viewRooms" onclick="alert('Get available rooms.')">View available rooms</button>
 
+  <h2>Group Selection</h2>
+
+  <p>You are not in a group</p>
+  <div style="text-align: center;">
+    <button id="button" type="viewRooms" onclick="alert('Get available rooms.')">View available rooms</button>
+    <br>
+    <button id="button" type="joinGroup" onclick="joinGroup()">Join Group</button>
+    <br>
+    <button id="button" type="logoff" onclick="logOff()">Log Off</button>
+    <!--<script> document.getElementById('button').innerHTML = JSON.parse(localStorage.getItem("ID")); </script> -->
+  </div>
 </body>
+
 </html>
